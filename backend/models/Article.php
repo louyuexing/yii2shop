@@ -17,13 +17,9 @@ use Yii;
  */
 class Article extends \yii\db\ActiveRecord
 {
-    /**
+    /*
      * @inheritdoc
      */
-    public function getArticleDetail(){
-        return $this->hasOne(Article::className(),['article_id'=>'id']);
-    }
-
 
     public $content;
     static public $status=[1=>'正常',0=>'隐藏',-1=>'删除'];
@@ -41,6 +37,7 @@ class Article extends \yii\db\ActiveRecord
             [['intro'], 'string'],
             [['article_category_id', 'sort', 'status', 'create_time'], 'integer'],
             [['name'], 'string', 'max' => 255],
+            [['content','name','intro','article_category_id'],'required','message'=>'不能为空']
         ];
     }
 
@@ -57,6 +54,7 @@ class Article extends \yii\db\ActiveRecord
             'sort' => '排序',
             'status' => '状态',
             'create_time' => '创建时间',
+            'content'=>'内容'
         ];
     }
 }

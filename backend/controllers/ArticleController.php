@@ -89,8 +89,9 @@ class ArticleController extends Controller
     }
     public function actionFindone($id){
         $result=ArticleDetail::findOne(['article_id'=>$id]);
+        $total=Article::findOne(['id'=>$id]);
         $model=new Article();
-        return $this->render('ainfo',['model'=>$model,'result'=>$result]);
+        return $this->render('ainfo',['model'=>$model,'result'=>$result,'total'=>$total]);
     }
 
 }

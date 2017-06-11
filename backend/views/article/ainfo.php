@@ -1,7 +1,7 @@
 <table class="teble">
         <tr>
             <td>
-               <h1> <?=$result->article_id?><h1>
+               <h1> <?=$total->name?><h1>
             </td>
          <tr>
     <tr>
