@@ -20,6 +20,8 @@ class ArticleDetail extends \yii\db\ActiveRecord
         return 'article_detail';
     }
 
+
+
     /**
      * @inheritdoc
      */

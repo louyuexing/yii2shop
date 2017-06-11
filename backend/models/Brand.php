@@ -19,7 +19,7 @@ class Brand extends \yii\db\ActiveRecord
      * @inheritdoc
      *
      */
-    public $imgFile;
+//    public $imgFile;
     static  public $status= [1=>'正常',0=>'异常'];
     public static function tableName()
     {
@@ -35,8 +35,8 @@ class Brand extends \yii\db\ActiveRecord
             ['name','required'],
             [['intro'], 'string'],
             [['sort', 'status'], 'integer'],
-            [['name', 'logo'], 'string', 'max' => 50],
-            ['imgFile','file','extensions'=>['jpg','png','gif']]
+            [['name', 'logo'], 'string'],
+//            ['imgFile','file','extensions'=>['jpg','png','gif']]
         ];
     }
 

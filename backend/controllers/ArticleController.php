@@ -16,6 +16,7 @@ class ArticleController extends Controller
     }
     public function actionAdd(){
         $model=new Article();
+        $modeld=new ArticleDetail();
         $result=ArticleCategory::find()->all();
         $request=new Request();
         if($request->isPost){
@@ -23,6 +24,10 @@ class ArticleController extends Controller
             if($model->validate()){
                 $model->create_time=time();
                 $model->save();
+                $res=$request->post();
+                $modeld->content=$res["Article"]["content"];
+                $modeld->article_id=$model->id;
+                $modeld->save();
                 \Yii::$app->session->setFlash('success','添加成功');
                 return $this->redirect(['article/index']);
             }else{
@@ -33,16 +38,42 @@ class ArticleController extends Controller
     }
 
     public function actionUpdate($id){
+//        $model=Article::findOne(['id'=>$id]);
+//        $result=ArticleCategory::find()->all();
+//        $request=new Request();
+//        if($request->isPost){
+//            $model->load($request->post());
+//            if($model->validate()){
+//                $model->create_time=time();
+//
+//                $model->save();
+//
+//                \Yii::$app->session->setFlash('success','添加成功');
+//                return $this->redirect(['article/index']);
+//            }else{
+//                var_dump($model->getErrors());exit;
+//            }
+//        }
+//        return $this->render('add',['model'=>$model,'result'=>$result]);
+
+
+
+
+
         $model=Article::findOne(['id'=>$id]);
+        $modeld=ArticleDetail::findOne(['article_id'=>$id]);
+        $model->content=$modeld->content;
         $result=ArticleCategory::find()->all();
         $request=new Request();
         if($request->isPost){
             $model->load($request->post());
             if($model->validate()){
                 $model->create_time=time();
-
                 $model->save();
-
+                $res=$request->post();
+                $modeld->content=$res["Article"]["content"];
+                $modeld->article_id=$model->id;
+                $modeld->save();
                 \Yii::$app->session->setFlash('success','添加成功');
                 return $this->redirect(['article/index']);
             }else{

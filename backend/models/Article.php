@@ -20,6 +20,11 @@ class Article extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+    public function getArticleDetail(){
+        return $this->hasOne(Article::className(),['article_id'=>'id']);
+    }
+
+
     public $content;
     static public $status=[1=>'正常',0=>'隐藏',-1=>'删除'];
     public static function tableName()

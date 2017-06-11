@@ -13,6 +13,7 @@
             <td><?=$brandinfo->id?></td>
             <td><?=$brandinfo->name?></td>
             <td><?=\yii\bootstrap\Html::img($brandinfo->logo,['height'=>40])?></td>
+
             <td><?=$brandinfo->intro?></td>
             <td><?=$brandinfo->sort?></td>
             <td><?=\backend\models\Brand::$status[$brandinfo->status]?></td>
