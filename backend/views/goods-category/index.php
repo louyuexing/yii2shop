@@ -22,7 +22,7 @@
             <td><?=$row['intro']?></td>
             <td><?=\yii\bootstrap\Html::a('删除',['goods-category/delete','id'=>$row['id']],['class'=>'btn btn-danger btn-xs'])?>
                 <?=\yii\bootstrap\Html::a('修改',['goods-category/update','id'=>$row['id']],['class'=>'btn btn-warning btn-xs'])?>
-            <td/>
+            </td>
     <tr>
     <?php endforeach;?>
     <?=\yii\bootstrap\Html::a('添加',['goods-category/add'],['class'=>'btn btn-info btn-xs'])?>

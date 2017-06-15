@@ -3,6 +3,7 @@
 namespace backend\models;
 
 use Yii;
+use yii\helpers\ArrayHelper;
 use yii\web\IdentityInterface;
 
 /**
@@ -23,12 +24,18 @@ use yii\web\IdentityInterface;
 class User extends \yii\db\ActiveRecord implements IdentityInterface
 {
     /**
+     *
+        implements（译：工具）是一个类实现一个接口用的关键字，它是用来实现接口中定义的抽象方法。
+     *
+     * 实现一个接口，必须实现接口中的所有方法。
+     *
      * @inheritdoc
      */
     public $newpassword;
     public $oldpassword;
     public $repassword;
     public $password;
+    public $role=[];
     public static function tableName()
     {
         return 'user';
@@ -46,6 +53,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             [['auth_key'], 'string', 'max' => 32],
             [['username'], 'unique'],
             [['email'], 'unique'],
+            ['role','safe'],
             ['repassword','compare','compareAttribute'=>'password_hash','message'=>'两次密码不一致'],
 
         ];
@@ -84,6 +92,36 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             'last_login_time' => 'Last Login Time',
             'last_login_ip' => 'Last Login Ip',
         ];
+    }
+
+    public static function loadrole(){
+        $roles=\Yii::$app->authManager->getRoles();
+        return ArrayHelper::map($roles,'name','description');
+
+    }
+
+    public function loadrolename(){
+       $authManager=Yii::$app->authManager;
+       $authManager->getRoles();
+       $role=$authManager->getRole($this->role);
+      $authManager->assign($role,$this->id);
+    }
+
+    public function roleid($id){
+        $authManager=Yii::$app->authManager;
+        $roles=$authManager->getRolesByUser($id);
+        foreach ($roles as $role ){
+            $this->role[]=$role->name;
+        }
+    }
+
+    public function role($id){
+        $authManager=Yii::$app->authManager;
+        $authManager->revokeAll($id);
+        $authManager->getRoles();
+//        var_dump($this->role);exit;
+        $role=$authManager->getRole($this->role);
+        $authManager->assign($role,$id);
     }
 
     /**

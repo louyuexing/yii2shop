@@ -16,6 +16,7 @@ class UserForm extends Model{
         return [
             [['username','password_hash'],'required'],
             ['username','validateUsername'],
+            ['rememberme','boolean'],
             ['oldpassword','compare','compareAttribute'=>'newpassword','message'=>'两次密码不一致']
         ];
     }
@@ -31,8 +32,9 @@ class UserForm extends Model{
       if($user!=null){
            if(\Yii::$app->security->validatePassword($this->password_hash,$user->password_hash)){
 
-               $this->rememberme?$duration=7*60:$duration=0;
+               $duration=$this->rememberme?7*60:0;
                   \Yii::$app->user->login($user,$duration);
+
            }else{
             return  $this->addError('username','用户名hui密码错误');
            }

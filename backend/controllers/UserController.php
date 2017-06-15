@@ -22,13 +22,16 @@ class UserController extends \yii\web\Controller
 
     public function actionAdd(){
         $model=new User();
+        $model->loadrole();
         $request=new Request();
         if($request->isPost){
             $model->load($request->post());
             if($model->validate()){
+//
                 $model->password_hash=\Yii::$app->security->generatePasswordHash($model->password_hash);
-
+                $model->auth_key=\Yii::$app->security->generateRandomString();
                 $model->save(false);
+                $model->loadrolename();
                 \Yii::$app->session->setFlash('success','注册成功');
               return  $this->redirect(['user/login']);
             }else{
@@ -46,7 +49,7 @@ class UserController extends \yii\web\Controller
                 $user=User::findOne(['username'=>$model->username]);
                 $user->last_login_ip=$request->getUserIP();
                 $user->last_login_time=time();
-                $user->auth_key=\Yii::$app->security->generateRandomString();
+
                 $user->save();
                 \Yii::$app->session->setFlash('success','登录成功');
                 return $this->redirect(['user/index']);
@@ -70,13 +73,16 @@ class UserController extends \yii\web\Controller
      }
      public function actionUpdate($id){
          $model=User::findOne(['id'=>$id]);
+         $model->roleid($id);
          $request=new Request();
          $user=new UpdateForm();
          $user->username=$model->username;
          if($request->isPost){
              $user->load($request->post());
              if($user->validate()){
+
               $model->load($request->post());
+                 $model->role($id);
               $model->password_hash=\Yii::$app->security->generatePasswordHash($user->newpassword);
               $model->save();
                  \Yii::$app->session->setFlash('success','修改成功');
@@ -88,6 +94,7 @@ class UserController extends \yii\web\Controller
 
              }
          }
+
          return $this->render('update',['model'=>$model,'user'=>$user]);
      }
 }
