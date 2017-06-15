@@ -14,7 +14,7 @@ class Article_categoryController extends Controller
           $query=ArticleCategory::find();
           $total=$query->count();
           $page=new Pagination(['totalCount'=>$total,'defaultPageSize'=>3]);
-        $cates=$query->offset($page->offset)->limit($page->limit)->all();
+          $cates=$query->offset($page->offset)->limit($page->limit)->all();
           return $this->render('index',['cates'=>$cates,'page'=>$page]);
     }
     public function actionAdd(){
