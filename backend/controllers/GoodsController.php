@@ -3,10 +3,12 @@
 namespace backend\controllers;
 
 
+use backend\components\RbacFilter;
 use backend\models\GoodsCategory;
 use backend\models\GoodsDayCount;
 use backend\models\GoodsImg;
 use backend\models\GoodsIntro;
+use backend\models\GoodsSearchForm;
 use xj\uploadify\UploadAction;
 use backend\models\Brand;
 use backend\models\Goods;
@@ -17,24 +19,56 @@ use yii\web\UploadedFile;
 
 class GoodsController extends \yii\web\Controller
 {
-    public function actionIndex()
-    {   $result=Goods::find()->all();
-        $query=Goods::find();
-        $model=new Goods();
-        $request=new Request();
-        if($request->isPost){
-            if($model->validate()){
-                $search=$request->post('Goods')['select'];
-                $query=Goods::find()->where(['like','name',$search]);
-                $count=$query->count();
-                $page= new Pagination(['totalCount'=>$count,'defaultPageSize'=>1]);
-                $cates=$query->offset($page->offset)->limit($page->limit)->all();
-                return $this->render('index',['page'=>$page,'cates'=>$cates,'model'=>$model]);
-            }
+    public function behaviors()
+    {
+        return [
+            'rbac'=>[
+                'class'=>RbacFilter::className(),
+                'only'=>['add','delete','update','img','img-delete','info'],
+            ]
+        ];
+    }
 
+
+    public function actionIndex()
+    {
+        $model = new GoodsSearchForm();
+        $query = Goods::find();
+
+        /*if($keyword = \Yii::$app->request->get('keyword')){
+            $query->andWhere(['like','name',$keyword]);
         }
-            $count = $query->count();
-            $page = new Pagination(['totalCount' => $count, 'defaultPageSize' => 2]);
+        if($sn = \Yii::$app->request->get('sn')){
+            $query->andWhere(['like','sn',$sn]);
+        }*/
+        //接收表单提交的查询参数
+        $model->search($query);
+        //商品名称含有"耳机"的  name like "%耳机%"
+        //$query = Goods::find()->where(['like','name','耳机']);
+        $page = new Pagination([
+            'totalCount'=>$query->count(),
+            'pageSize'=>5
+        ]);
+
+//        $models = $query->limit($pager->limit)->offset($pager->offset)->all();
+//        return $this->render('index',['models'=>$models,'pager'=>$pager,'model'=>$model]);
+//        $result=Goods::find()->all();
+//        $query=Goods::find();
+//        $model=new Goods();
+//        $request=new Request();
+//        if($request->isPost){
+//            if($model->validate()){
+//                $search=$request->post('Goods')['select'];
+//                $query=Goods::find()->where(['like','name',$search]);
+//                $count=$query->count();
+//                $page= new Pagination(['totalCount'=>$count,'defaultPageSize'=>1]);
+//                $cates=$query->offset($page->offset)->limit($page->limit)->all();
+//                return $this->render('index',['page'=>$page,'cates'=>$cates,'model'=>$model]);
+//            }
+
+//        }
+//            $count = $query->count();
+//            $page = new Pagination(['totalCount' => $count, 'defaultPageSize' => 2]);
             $cates = $query->offset($page->offset)->limit($page->limit)->all();
             return $this->render('index', ['page' => $page, 'cates' => $cates, 'model' => $model]);
 

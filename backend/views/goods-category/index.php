@@ -20,10 +20,18 @@
             <td><?=str_repeat('---',$row['depth']).$row['name']?></td>
             <td><?=$row['parent_id']?$row->parent->name:''?></td>
             <td><?=$row['intro']?></td>
-            <td><?=\yii\bootstrap\Html::a('删除',['goods-category/delete','id'=>$row['id']],['class'=>'btn btn-danger btn-xs'])?>
-                <?=\yii\bootstrap\Html::a('修改',['goods-category/update','id'=>$row['id']],['class'=>'btn btn-warning btn-xs'])?>
+            <td>
+                <?php if(Yii::$app->user->can('goods-category/delete')){
+                    echo \yii\bootstrap\Html::a('删除',['goods-category/delete','id'=>$row['id']],['class'=>'btn btn-danger btn-xs']);
+                }?>
+                <?php if(Yii::$app->user->can('goods-category/update')){
+                    echo \yii\bootstrap\Html::a('修改',['goods-category/update','id'=>$row['id']],['class'=>'btn btn-warning btn-xs']);
+                }?>
             </td>
     <tr>
     <?php endforeach;?>
-    <?=\yii\bootstrap\Html::a('添加',['goods-category/add'],['class'=>'btn btn-info btn-xs'])?>
+    <?php if(Yii::$app->user->can('goods-category/add')){
+        echo \yii\bootstrap\Html::a('添加',['goods-category/add'],['class'=>'btn btn-info btn-xs']);
+    }?>
+
 </table>

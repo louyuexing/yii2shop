@@ -2,12 +2,23 @@
 
 namespace backend\controllers;
 
+use backend\components\RbacFilter;
 use backend\models\ArticleDetail;
 use yii\web\Controller;
 use yii\web\Request;
 
 class Article_detailController extends Controller
 {
+    public function behaviors(){
+        return[
+            'rbac'=>[
+                'class'=>RbacFilter::className(),
+                'only'=>['find-d','add']
+            ]
+            ];
+    }
+
+
     public function actionFindD($id)
     {
         return $result=ArticleDetail::findOne(['article_id'=>$id]);

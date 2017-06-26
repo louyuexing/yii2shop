@@ -2,13 +2,26 @@
 
 namespace backend\controllers;
 
+use backend\components\RbacFilter;
 use backend\models\UpdateForm;
+use backend\models\UpdatePasswordForm;
 use backend\models\User;
 use backend\models\UserForm;
 use yii\web\Request;
 
 class UserController extends \yii\web\Controller
 {
+    public function behaviors()
+    {
+        return [
+            'rbac'=>[
+                'class'=>RbacFilter::className(),
+                'only'=>['add','index','update'],
+            ]
+        ];
+    }
+
+
     public function actionIndex()
     {
         if(\Yii::$app->user->isGuest){
@@ -75,26 +88,55 @@ class UserController extends \yii\web\Controller
          $model=User::findOne(['id'=>$id]);
          $model->roleid($id);
          $request=new Request();
-         $user=new UpdateForm();
-         $user->username=$model->username;
          if($request->isPost){
-             $user->load($request->post());
-             if($user->validate()){
-
+             if($model->validate()){
               $model->load($request->post());
                  $model->role($id);
-              $model->password_hash=\Yii::$app->security->generatePasswordHash($user->newpassword);
-              $model->save();
+                 $model->save(false);
                  \Yii::$app->session->setFlash('success','修改成功');
                  return $this->redirect(['user/index']);
 
              }else{
-                 $error=($user->getErrors());
-                 \Yii::$app->session->setFlash('warning',$error['username'][0]);
+                 $error=($model->getErrors());
+
+                 var_dump($error);exit;
+             }
+         }
+
+         return $this->render('update',['model'=>$model]);
+     }
+
+
+     public function actionUpdatePassword($id){
+         $user=User::findOne(['id'=>$id]);
+         $model=new UpdatePasswordForm();
+         $request=new Request();
+         if($request->isPost){
+             $model->load($request->post());
+             $model->username=$user->username;
+
+             if($model->validate()){
+                 $user->password_hash=\Yii::$app->security->generatePasswordHash($model->newpassword);
+                 $user->save();
+                 \Yii::$app->session->setFlash('success','密码修改成功');
+                 return $this->redirect(['user/index']);
+
+             }else{
+                 $error=($model->getErrors()['oldpassword'][0]);
+                \Yii::$app->session->setFlash('danger',$error);
+//var_dump($model->getErrors());exit;
 
              }
          }
 
-         return $this->render('update',['model'=>$model,'user'=>$user]);
+         return $this->render('updatep',['model'=>$model]);
+     }
+
+     public function actionRePassword($id){
+         $user=User::findOne(['id'=>$id]);
+         $user->password_hash=\Yii::$app->security->generatePasswordHash(123456);
+         $user->save();
+         \Yii::$app->session->setFlash('success','重置成功');
+         return $this->redirect(['user/index']);
      }
 }

@@ -2,12 +2,22 @@
 
 namespace backend\controllers;
 
+use backend\components\RbacFilter;
 use backend\models\GoodsImg;
 use yii\web\Request;
 use yii\web\UploadedFile;
 
 class GoodsImgController extends \yii\web\Controller
 {
+    public function behaviors(){
+        return[
+            'rbac'=>[
+                'class'=>RbacFilter::className(),
+                'only'=>['index','img']
+            ]
+        ];
+    }
+
     public function actionIndex()
     {
         return $this->render('index');

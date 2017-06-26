@@ -23,7 +23,8 @@ class UserForm extends Model{
     public function attributeLabels(){
         return [
             'username'=>'用户名',
-            'password_hash'=>'密码'
+            'password_hash'=>'密码',
+            'rememberme'=>'记住密码'
         ];
     }
     public function validateUsername(){
@@ -34,9 +35,8 @@ class UserForm extends Model{
 
                $duration=$this->rememberme?7*60:0;
                   \Yii::$app->user->login($user,$duration);
-
            }else{
-            return  $this->addError('username','用户名hui密码错误');
+            return  $this->addError('username','用户名或密码错误');
            }
       }else{
         return  $this->addError('username','用户名或密码错误');

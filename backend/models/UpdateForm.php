@@ -13,15 +13,17 @@ class UpdateForm extends Model{
     public $status;
     public function rules(){
         return [
-            [['repassword','newpassword','newpassword'],'required'],
-            ['oldpassword','validatePassword'],
-            ['repassword','compare','compareAttribute'=>'newpassword','message'=>'两次密码不一致']
+//            [['repassword','newpassword','newpassword'],'required'],
+//            ['oldpassword','validatePassword'],
+//            ['repassword','compare','compareAttribute'=>'newpassword','message'=>'两次密码不5一致']
         ];
     }
     public function attributeLabels(){
         return [
             'username'=>'用户名',
-            'oldpassword'=>'旧密码'
+            'oldpassword'=>'旧密码',
+            'newpassword'=>'新密码',
+            'repassword'=>' 确认密码',
         ];
     }
     public function validatePassword(){

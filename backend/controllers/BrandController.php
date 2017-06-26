@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\components\RbacFilter;
 use crazyfd\qiniu\Qiniu;
 use backend\models\Brand;
 use yii\web\Controller;
@@ -11,6 +12,22 @@ use xj\uploadify\UploadAction;
 
 class BrandController extends Controller
 {
+    public function behaviors(){
+        return[
+           'rbac'=>[
+               'class'=>RbacFilter::className(),
+                'only'=>['index','add','update','delete']
+              ]
+        ];
+
+    }
+
+
+
+
+
+
+
     public function actionIndex()
     {   $model=new Brand();
         $result=$model->find()->all();

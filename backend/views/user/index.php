@@ -16,7 +16,7 @@
         <td><?=$row['username']?></td>
         <td><?=$row['password_hash']?></td>
         <td><?=$row->status>0?'正常':'隐藏'?></td>
-        <td><?=$row['last_login_time']?></td>
+        <td><?=date('Y-m-dH-i-s',$row['last_login_time'])?></td>
         <td><?=$row['last_login_ip']?></td>
         <td>
             <?php $roles=Yii::$app->authManager->getRolesByUser($row['id']);
@@ -29,11 +29,23 @@
             ?>
         </td>
         <td>
-            <?=\yii\bootstrap\Html::a('删除',['user/delete','id'=>$row->id],['class'=>'btn btn-danger btn-xs'])?>
-            <?=\yii\bootstrap\Html::a('修改',['user/update','id'=>$row->id],['class'=>'btn btn-warning btn-xs'])?>
+            <?php if(Yii::$app->user->can('user/delete')){
+                echo \yii\bootstrap\Html::a('删除',['user/delete','id'=>$row->id],['class'=>'btn btn-danger btn-xs']);
+            }?>
+            <?php if(Yii::$app->user->can('user/update')){
+                echo \yii\bootstrap\Html::a('修改',['user/update','id'=>$row->id],['class'=>'btn btn-warning btn-xs']);
+            }?>
+            <?php if(Yii::$app->user->can('user/update-password')){
+                echo \yii\bootstrap\Html::a('密码修改',['user/update-password','id'=>$row->id],['class'=>'btn btn-warning btn-xs']);
+            }?>
+            <?php if(Yii::$app->user->can('user/re-password')){
+                echo \yii\bootstrap\Html::a('重置密码',['user/re-password','id'=>$row->id],['class'=>'btn btn-warning btn-xs']);
+            }?>
         </td>
     <tr>
         <?php endforeach;?>
 
 </table>
-<?=\yii\bootstrap\Html::a('注销',['user/login-out'],['class'=>'btn btn-warning btn-xs'])?>
+<?php if(Yii::$app->user->can('user/login-out')){
+    echo \yii\bootstrap\Html::a('注销',['user/login-out'],['class'=>'btn btn-warning btn-xs']);
+}?>

@@ -17,12 +17,21 @@
             <td><?=$articleinfo->status?></td>
             <td><?=$articleinfo->create_time?></td>
             <td>
-                <?=\yii\bootstrap\Html::a('删除',['article/delete','id'=>$articleinfo->id],['class'=>'btn btn-danger btn-xs'])?>
-                <?=\yii\bootstrap\Html::a('修改',['article/update','id'=>$articleinfo->id],['class'=>'btn btn-warning btn-xs'])?>
-                <?=\yii\bootstrap\Html::a('查看',['article/findone','id'=>$articleinfo->id],['class'=>'btn btn-warning btn-xs'])?>
+                <?php if(Yii::$app->user->can('article/delete')){
+                echo \yii\bootstrap\Html::a('删除',['article/delete','id'=>$articleinfo->id],['class'=>'btn btn-danger btn-xs']);
+                }?>
+                <?php if(Yii::$app->user->can('article/update')){
+                    echo \yii\bootstrap\Html::a('修改',['article/update','id'=>$articleinfo->id],['class'=>'btn btn-danger btn-xs']);
+                }?>
+                <?php if(Yii::$app->user->can('article/findone')){
+                    echo \yii\bootstrap\Html::a('查看',['article/findone','id'=>$articleinfo->id],['class'=>'btn btn-danger btn-xs']);
+                }?>
+
             </td>
         </tr>
     <?php endforeach;?>
-    <?=\yii\bootstrap\Html::a('添加',['article/add'],['class'=>'btn btn-info '])?>
+    <?php if(Yii::$app->user->can('article/add')){
+        echo \yii\bootstrap\Html::a('添加',['article/add','id'=>$articleinfo->id],['class'=>'btn btn-danger btn-xs']);
+    }?>
 
 </table>

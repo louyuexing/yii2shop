@@ -54,7 +54,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             [['username'], 'unique'],
             [['email'], 'unique'],
             ['role','safe'],
-            ['repassword','compare','compareAttribute'=>'password_hash','message'=>'两次密码不一致'],
+//            ['repassword','compare','compareAttribute'=>'password_hash','message'=>'两次密码NO一致'],
 
         ];
     }
@@ -80,17 +80,18 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return [
             'id' => 'ID',
-            'username' => 'Username',
+            'username' => '用户名',
             'auth_key' => 'Auth Key',
-            'password_hash' => 'Password Hash',
+            'password_hash' => '密码',
             'npassword' => 'nPassword',
-            'newpassword' => 'newPassword',
-            'email' => 'Email',
-            'status' => 'Status',
+            'newpassword' => '新密码',
+            'email' => '邮箱',
+            'status' => '状态',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'last_login_time' => 'Last Login Time',
             'last_login_ip' => 'Last Login Ip',
+            'repassword'=>'确认密码'
         ];
     }
 

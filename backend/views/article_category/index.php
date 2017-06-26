@@ -17,14 +17,20 @@
             <td><?=\backend\models\ArticleCategory::$status[$articlecategoryinfo->status]?></td>
             <td><?=\backend\models\ArticleCategory::$is_help[$articlecategoryinfo->is_help]?></td>
             <td>
-                <?=\yii\bootstrap\Html::a('删除',['article_category/delete','id'=>$articlecategoryinfo->id],['class'=>'btn btn-danger btn-xs'])?>
-                <?=\yii\bootstrap\Html::a('修改',['article_category/update','id'=>$articlecategoryinfo->id],['class'=>'btn btn-warning btn-xs'])?>
+                <?php if(Yii::$app->user->can('article_category/delete')){
+                    echo \yii\bootstrap\Html::a('删除',['article_category/delete','id'=>$articlecategoryinfo->id],['class'=>'btn btn-danger btn-xs']);
+
+                }?>
+
+                <?php if(Yii::$app->user->can('article_category/update')){
+                  echo   \yii\bootstrap\Html::a('修改',['article_category/update','id'=>$articlecategoryinfo->id],['class'=>'btn btn-warning btn-xs']);
+                }?>
             </td>
         </tr>
     <?php endforeach;?>
-
-    <?=\yii\bootstrap\Html::a('添加',['article_category/add'],['class'=>'btn btn-info '])?>
-
+     <?php if(Yii::$app->user->can('article_category/add')){
+         echo \yii\bootstrap\Html::a('添加',['article_category/add'],['class'=>'btn btn-info ']);
+     }?>
 </table>
 
 <?php

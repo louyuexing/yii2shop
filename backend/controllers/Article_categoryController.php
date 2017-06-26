@@ -1,6 +1,7 @@
 <?php
 namespace backend\controllers;
 
+use backend\components\RbacFilter;
 use backend\models\ArticleCategory;
 use yii\data\Pagination;
 use yii\web\Controller;
@@ -8,6 +9,19 @@ use yii\web\Request;
 
 class Article_categoryController extends Controller
 {
+    public function behaviors(){
+        return[
+            'rbac'=>[
+                'class'=>RbacFilter::className(),
+                'only'=>['index','add','delate','update']
+            ]
+        ];
+
+
+    }
+
+
+
     public function actionIndex()
     {   // $model =new ArticleCategory();
   //          $result=$model->find()->all();

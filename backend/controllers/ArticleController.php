@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\components\RbacFilter;
 use backend\models\Article;
 use backend\models\ArticleCategory;
 use backend\models\ArticleDetail;
@@ -10,6 +11,15 @@ use yii\web\Request;
 
 class ArticleController extends Controller
 {
+    public function behaviors(){
+        return[
+            'rbac'=>[
+                'class'=>RbacFilter::className(),
+                'only'=>['index','add','update','delete','find-one']
+            ]
+        ];
+    }
+
     public function actionIndex()
     {    $result=Article::find()->all();
         return $this->render('index',['result'=>$result]);

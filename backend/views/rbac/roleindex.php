@@ -18,8 +18,13 @@
                 ?>
             </td>
             <td>
-                <?=\yii\bootstrap\Html::a('删除',['rbac/role-del','name'=>$model->name],['class'=>'btn btn-danger btn-xs'])?>
-                <?=\yii\bootstrap\Html::a('修改',['rbac/role-edit','name'=>$model->name],['class'=>'btn btn-warning btn-xs'])?>
+                <?php if(Yii::$app->user->can('rbac/role-del')){
+                    echo \yii\bootstrap\Html::a('删除',['rbac/role-del','name'=>$model->name],['class'=>'btn btn-danger btn-xs']);
+                }?>
+                <?php if(Yii::$app->user->can('rbac/role-edit')){
+                    echo \yii\bootstrap\Html::a('修改',['rbac/role-edit','name'=>$model->name],['class'=>'btn btn-warning btn-xs']);
+                }?>
+
             </td>
         </tr>
     <?php endforeach;?>

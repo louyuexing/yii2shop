@@ -18,10 +18,18 @@
             <td><?=$brandinfo->sort?></td>
             <td><?=\backend\models\Brand::$status[$brandinfo->status]?></td>
             <td>
-                <?=\yii\bootstrap\Html::a('删除',['brand/delete','id'=>$brandinfo->id],['class'=>'btn btn-danger btn-xs'])?>
-                <?=\yii\bootstrap\Html::a('修改',['brand/update','id'=>$brandinfo->id],['class'=>'btn btn-warning btn-xs'])?>
+                <?php if(Yii::$app->user->can('brand/delete')){
+                    echo \yii\bootstrap\Html::a('删除',['brand/delete','id'=>$brandinfo->id],['class'=>'btn btn-danger btn-xs']);
+                }?>
+              <?php if(Yii::$app->user->can('brand/update')){
+                  echo \yii\bootstrap\Html::a('修改',['brand/update','id'=>$brandinfo->id],['class'=>'btn btn-warning btn-xs']);
+                }?>
             </td>
         </tr>
     <?php endforeach;?>
 </table>
-<?=\yii\bootstrap\Html::a('添加',['brand/add'],['class'=>'btn btn-info '])?>
+<?php
+if(Yii::$app->user->can('brand/add')){
+    echo \yii\bootstrap\Html::a('添加',['brand/add'],['class'=>'btn btn-info ']);
+}
+?>

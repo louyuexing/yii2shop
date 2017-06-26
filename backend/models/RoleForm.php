@@ -27,7 +27,7 @@ class RoleForm extends Model{
     public function loadrole(){
       $authManager= \Yii::$app->authManager;
       if(\Yii::$app->authManager->getRole($this->name)){
-          $this->addError('name','绝世已经存在');
+          $this->addError('name','角色已经存在');
       }else{
           $role=$authManager->createRole($this->name);
           $role->description=$this->description;

@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\components\RbacFilter;
 use backend\models\PermissionForm;
 use backend\models\RoleForm;
 use yii\helpers\ArrayHelper;
@@ -11,7 +12,15 @@ use yii\web\Request;
 
 class RbacController extends \yii\web\Controller
 {
-
+    public function behaviors(){
+        return[
+            'rbac'=>[
+                'class'=>RbacFilter::className(),
+                'only'=>['index','add-permission','edit','del','role-index','add-role',
+                'role-del','role-edit']
+            ]
+        ];
+    }
     public function actionIndex(){
        $models=\Yii::$app->authManager->getPermissions();
 //       var_dump($models);exit;
@@ -24,7 +33,7 @@ class RbacController extends \yii\web\Controller
         if($model->load(\Yii::$app->request->post()) && $model->validate()){
             if($model->addpermission()){
                 \Yii::$app->session->setFlash('success','添加成功');
-                return $this->redirect(['rbac/index']);
+                return $this->redirect(['rbac/add-permission']);
             }
         }
         return $this->render('add-permission',['model'=>$model]);
