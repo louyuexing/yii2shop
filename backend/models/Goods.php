@@ -28,6 +28,7 @@ class Goods extends \yii\db\ActiveRecord
      *
      *
      */
+    public $amount;
     public $select;
     public $file;
     public $content;
