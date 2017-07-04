@@ -1,0 +1,38 @@
+<table class="table" border="1px">
+    <tr>
+        <td>id</td>
+        <td>tree</td>
+        <td>lft</td>
+        <td>rgt</td>
+        <td>深度</td>
+        <td>名称</td>
+        <td>上级分类</td>
+        <td>路由</td>
+        <td>操作</td>
+    </tr>
+    <?php foreach ($result as $row):?>
+    <tr>
+        <td><?=$row['id']?></td>
+        <td><?=$row['tree']?></td>
+        <td><?=$row['lft']?></td>
+        <td><?=$row['rgt']?></td>
+        <td><?=$row['depth']?></td>
+        <td><?=str_repeat('---',$row['depth']).$row['name']?></td>
+        <td><?=$row['parent_id']?></td>
+        <td><?=$row['url']?></td>
+        <td>
+            <?php if(Yii::$app->user->can('menu/delete')){
+                echo \yii\bootstrap\Html::a('删除',['menu/delete','id'=>$row['id']],['class'=>'btn btn-danger btn-xs']);
+            }?>
+            <?php if(Yii::$app->user->can('menu/update')){
+                echo \yii\bootstrap\Html::a('修改',['menu/update','id'=>$row['id']],['class'=>'btn btn-warning btn-xs']);
+            }?>
+
+        </td>
+    <tr>
+        <?php endforeach;?>
+        <?php if(Yii::$app->user->can('menu/add')){
+            echo \yii\bootstrap\Html::a('添加',['menu/add'],['class'=>'btn btn-info btn-xs']);
+        }?>
+
+</table>
